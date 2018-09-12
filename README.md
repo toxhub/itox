@@ -296,3 +296,67 @@ module.exports = {
   }
 }
 ```
+
+## 使用异步组件 asyncComponent
+
+```
+npm install babel-plugin-syntax-dynamic-import --save-dev
+npm install --save-dev @babel/polyfill --save-dev
+
+```
+webpack
+```
+   use: {
+          loader: 'babel-loader',
+          options: { // babel 转义的配置选项
+            babelrc: false, // 不使用.babelrc文件
+            presets: [
+              '@babel/preset-env',
+              '@babel/preset-react'
+            ],
+            plugins:['syntax-dynamic-import'],
+            cacheDirectory: true
+          },
+        },
+```
+使用
+
+AsyncComponent
+
+```js
+import React, { Component } from 'react'
+
+export default function asyncComponent(importComponent) {
+  class AsyncComponent extends Component {
+    constructor(props) {
+      super(props)
+
+      this.state = {
+        component: null
+      }
+    }
+    async componentDidMount() {
+      const { default: component } = await importComponent()
+
+      this.setState({
+        component: component
+      })
+    }
+    render() {
+      const C = this.state.component
+
+      return C ? <C {...this.props} /> : null
+    }
+  }
+  return AsyncComponent
+}
+```
+index.j
+```js
+import "@babel/polyfill";
+
+import asyncComponent from './common/AsyncComponent';
+const Home = asyncComponent(() => import("./page-home/home"));
+
+```
+

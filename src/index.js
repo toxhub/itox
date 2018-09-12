@@ -7,8 +7,11 @@ import {
   NavLink,
   Switch
 } from 'react-router-dom'
-import Home from './page-home/home'
+import "@babel/polyfill";
+// import Home from './page-home/home'
 import News from './page-news/news'
+import asyncComponent from './common/AsyncComponent';
+const Home = asyncComponent(() => import("./page-home/home"));
 import Login from './page-login/login'
 
 const App = () => (
