@@ -185,5 +185,114 @@ module.exports = {
 ```
 
 
+## 使用react-router
 
+```
+npm install react-router-dom --save-dev
+```
 
+当exact为true时只有path等于location.pathname时才会匹配成功。
+
+### 支持css
+
+通常情况下,webpack只对js文件提供支持,但是比如说less/sass/css/ES7等就不认识了,这时候就需要使用loaders来帮助它转化了
+
+```
+npm install css-loader --save-dev
+npm install --save-dev mini-css-extract-plugin
+```
+
+```js
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+module.exports = {
+  plugins: [
+    new MiniCssExtractPlugin({
+      // Options similar to the same options in webpackOptions.output
+      // both options are optional
+      filename: "[name].css",
+      chunkFilename: "[id].css"
+    })
+  ],
+  module: {
+    rules: [
+      {
+        test: /\.css$/,
+        use: [
+          {
+            loader: MiniCssExtractPlugin.loader,
+            options: {
+              // you can specify a publicPath here
+              // by default it use publicPath in webpackOptions.output
+              publicPath: '../'
+            }
+          },
+          "css-loader"
+        ]
+      }
+    ]
+  }
+}
+```
+
+### 提取出css样式
+
+之前直接使用 minimize: true 在匹配到css后直接压缩
+
+遇到的问题：
+项目是用了autoprefix自动添加前缀，这样压缩，会导致添加的前缀丢失
+
+解决：使用插件 optimize-css-assets-webpack-plugin
+
+new OptimizeCSSAssetsPlugin({
+    assetNameRegExp: /\.css\.*(?!.*map)/g,  //注意不要写成 /\.css$/g
+    cssProcessor: require('cssnano'),
+    cssProcessorOptions: {
+        discardComments: { removeAll: true },
+        // 避免 cssnano 重新计算 z-index
+        safe: true,
+        // cssnano 集成了autoprefixer的功能
+        // 会使用到autoprefixer进行无关前缀的清理
+        // 关闭autoprefixer功能
+        // 使用postcss的autoprefixer功能
+        autoprefixer: false
+    },
+    canPrint: true
+}),
+```
+npm install uglifyjs-webpack-plugin --save-dev
+npm install  optimize-css-assets-webpack-plugin --save-dev
+```
+```js
+const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
+module.exports = {
+  optimization: {
+    minimizer: [
+      new UglifyJsPlugin({
+        cache: true,
+        parallel: true,
+        sourceMap: true // set to true if you want JS source maps
+      }),
+      new OptimizeCSSAssetsPlugin({})
+    ]
+  },
+  plugins: [
+    new MiniCssExtractPlugin({
+      filename: "[name].css",
+      chunkFilename: "[id].css"
+    })
+  ],
+  module: {
+    rules: [
+      {
+        test: /\.css$/,
+        use: [
+          MiniCssExtractPlugin.loader,
+          "css-loader"
+        ]
+      }
+    ]
+  }
+}
+```
