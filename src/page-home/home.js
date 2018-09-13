@@ -12,11 +12,11 @@ class Home extends Component {
   }
 }
 export default Home;*/
-export default () => (
+/*export default () => (
   <div className="home">
     <h2>Home</h2>
   </div>
-)
+)*/
 
 /*
 const Home = () => (
@@ -25,3 +25,17 @@ const Home = () => (
   </div>
 )
 export default Home*/
+import {inject, observer} from "mobx-react";
+
+@inject("store")
+@observer
+class Home extends Component {
+  render() {
+    return (
+      <div className="home">
+        <h2>Home{this.props.store.baseStore.text}</h2>
+      </div>
+    )
+  }
+}
+export default Home;

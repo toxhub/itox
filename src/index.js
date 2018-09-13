@@ -8,12 +8,14 @@ import {
   Switch
 } from 'react-router-dom'
 import "@babel/polyfill";
+import {Provider} from 'mobx-react'
+import * as stores from './store'
+
 // import Home from './page-home/home'
 import News from './page-news/news'
 import asyncComponent from './common/AsyncComponent';
 const Home = asyncComponent(() => import("./page-home/home"));
 import Login from './page-login/login'
-
 const App = () => (
   <Router>
     <div>
@@ -37,6 +39,8 @@ const App = () => (
 )
 
 render(
-  <App />,
+  <Provider store = {stores}>
+    <App />
+  </Provider>,
   document.getElementById('root')
 )

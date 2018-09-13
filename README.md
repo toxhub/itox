@@ -300,7 +300,7 @@ module.exports = {
 ## 使用异步组件 asyncComponent
 
 ```
-npm install babel-plugin-syntax-dynamic-import --save-dev
+npm install @babel/plugin-syntax-dynamic-import --save-dev
 npm install --save-dev @babel/polyfill --save-dev
 
 ```
@@ -314,7 +314,9 @@ webpack
               '@babel/preset-env',
               '@babel/preset-react'
             ],
-            plugins:['syntax-dynamic-import'],
+            plugins:[
+              '@babel/plugin-syntax-dynamic-import',
+            ],
             cacheDirectory: true
           },
         },
@@ -351,12 +353,56 @@ export default function asyncComponent(importComponent) {
   return AsyncComponent
 }
 ```
-index.j
+index.js
 ```js
 import "@babel/polyfill";
 
 import asyncComponent from './common/AsyncComponent';
 const Home = asyncComponent(() => import("./page-home/home"));
 
+```
+
+## 使用mobx 来做数据管理
+
+```
+npm install mobx --save-dev
+npm install mobx-react --save-dev
+
+```
+装饰者和class
+
+```
+npm install @babel/plugin-proposal-class-properties --save-dev
+npm install @babel/plugin-proposal-class-properties --save-dev
+
+```
+```
+plugins:[
+  '@babel/plugin-syntax-dynamic-import',
+  ['@babel/plugin-proposal-decorators',{"legacy": true}],
+  ['@babel/plugin-proposal-class-properties', {loose: true}]
+],        
+```
+```
+import {Provider} from 'mobx-react'
+import * as stores from './store'
+  <Provider store = {stores}>
+    <App />
+  </Provider>,
+```
+```
+
+@inject("store")
+@observer
+class Home extends Component {
+  render() {
+    return (
+      <div className="home">
+        <h2>Home{this.props.store.baseStore.text}</h2>
+      </div>
+    )
+  }
+}
+export default Home;
 ```
 
