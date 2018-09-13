@@ -5,7 +5,7 @@
   "main": "webpack.config.dev.js",
   "scripts": {
     "start": "webpack-dev-server --config './webpack.config.dev.js' --open --mode development",
-    "build": "webpack --config './webpack.config.dev.js' --mode development --progress"
+    "build": "webpack  --mode production --progress"
   },
   "author": "cdc",
   "license": "ISC",
@@ -18,9 +18,13 @@
     "@babel/preset-env": "^7.0.0",
     "@babel/preset-react": "^7.0.0",
     "@babel/preset-stage-2": "^7.0.0",
+    "antd": "^3.9.2",
     "babel-loader": "^8.0.2",
+    "babel-plugin-import": "^1.8.0",
     "css-loader": "^1.0.0",
     "html-webpack-plugin": "^3.2.0",
+    "less": "^3.8.1",
+    "less-loader": "^4.1.0",
     "mini-css-extract-plugin": "^0.4.2",
     "mobx": "^5.1.0",
     "mobx-react": "^5.2.8",

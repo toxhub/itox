@@ -8,7 +8,13 @@ import {
   Switch
 } from 'react-router-dom'
 import "@babel/polyfill";
+
+import {LocaleProvider} from 'antd' // 这个是ant的语言
+import zh_CN from 'antd/lib/locale-provider/zh_CN'
+import 'antd/dist/antd.less'
+
 import {Provider} from 'mobx-react'
+
 import * as stores from './store'
 
 // import Home from './page-home/home'
@@ -39,8 +45,10 @@ const App = () => (
 )
 
 render(
-  <Provider store = {stores}>
-    <App />
-  </Provider>,
+  <LocaleProvider locale={zh_CN}>
+    <Provider store = {stores}>
+      <App />
+    </Provider>
+  </LocaleProvider>,
   document.getElementById('root')
 )

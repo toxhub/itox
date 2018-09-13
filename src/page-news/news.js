@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import { DatePicker} from 'antd';
 import {inject, observer} from "mobx-react";
 
 @inject("store")
@@ -8,6 +9,7 @@ class News extends Component {
     return (
       <div>
         <h2>news{this.props.store.baseStore.text}</h2>
+        <DatePicker />
       </div>
     )
   }

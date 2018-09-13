@@ -406,3 +406,73 @@ class Home extends Component {
 export default Home;
 ```
 
+## 增加antd组件 
+
+```
+npm install antd --save-dev
+
+import 'antd/dist/antd.less';  // or 'antd/dist/antd.css'
+
+### 按需加载
+1
+{
+  "plugins": [
+    ["import", { "libraryName": "antd", "libraryDirectory": "es", "style": "css" }] // `style: true` 会加载 less 文件
+  ]
+}
+
+# 2 手动引入
+import DatePicker from 'antd/lib/date-picker';  // 加载 JS
+import 'antd/lib/date-picker/style/css';        // 加载 CSS
+// import 'antd/lib/date-picker/style';         // 加载 LESS
+
+
+本地化：
+import {LocaleProvider} from 'antd' // 这个是ant的语言
+import zh_CN from 'antd/lib/locale-provider/zh_CN'
+
+
+  <LocaleProvider locale={zh_CN}>
+    <Provider store = {stores}>
+      <App />
+    </Provider>
+  </LocaleProvider>
+
+
+
+```
+
+按需加载
+
+```
+npm install babel-plugin-import --save-dev
+
+// .babelrc or babel-loader option
+{
+  "plugins": [
+     ["import", { "libraryName": "antd", "libraryDirectory": "es", "style": "less" }], // `style: true` 会加载 less 文件
+  ]
+}
+
+```
+
+### 支持less的转换
+
+```
+npm install --save-dev less-loader less
+
+{
+        test: /(\.css|\.less)$/,
+        use: [
+          ...
+          {
+            loader: "less-loader",
+            options: {
+              javascriptEnabled: true // 选择是ant的支持
+            }
+          }
+        ]
+      }
+
+```
+

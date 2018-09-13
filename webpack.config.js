@@ -10,7 +10,9 @@ module.exports = {
   },
   output: {
     path: __dirname + '/dist',
-    filename: '[name].bundle.js'
+    filename: '[name].bundle.js',
+    publicPath: '/react-1/dist/'
+    // publicPath: "https://...cdnpath.../assets/" // CDN 资源 URL 前缀
   },
   devServer: {
     contentBase: path.join(__dirname, "./src/"), // 默认webpack-dev-server会为根文件夹提供本地服务器，如果想为另外一个目录下的文件提供本地服务器，应该在这里设置其所在目录（本例设置到“public"目录)
