@@ -8,6 +8,10 @@
 
 ## 基本使用
 
+- make package 来打包 version作为前缀
+- make package-prd 来做CDN的打包处理
+- npm run start 运行开发环境
+
 ### 安装webpack
 
 ```
@@ -501,5 +505,32 @@ npm i babel-eslint --save-dev
 
 运行 
 ./node_modules/.bin/eslint .
+
+```
+
+
+### 静态文件的处理
+
+清除dist目录文件 ，拷贝asset文件到dist目录下
+
+```
+npm i clean-webpack-plugin copy-webpack-plugin --save-dev
+  plugins: [ // 执行顺序是反着的
+    new CopyWebpackPlugin([{
+      from: path.resolve(__dirname, './src/assets'),
+      to: './assets',
+      ignore: ['.*'],
+    }]),
+    new CleanWebpackPlugin(['dist'], {
+      root: path.resolve(__dirname), // 根目录
+      // verbose Write logs to console.
+      verbose: true, // 开启在控制台输出信息
+      // dry Use boolean "true" to test/emulate delete. (will not remove files).
+      // Default: false - remove files
+      dry: false,
+    }),
+  ]
+
+
 
 ```
