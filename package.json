@@ -1,12 +1,15 @@
 {
-  "name": "react-1",
-  "version": "1.0.0",
+  "name": "react-start",
+  "version": "0.1.0",
   "description": "",
   "main": "webpack.config.dev.js",
   "scripts": {
+    "start": "npm run dev & npm run server",
     "server": "node app.js",
-    "start": "webpack-dev-server --config './webpack.config.dev.js' --open --mode development",
-    "build": "webpack  --mode production --progress"
+    "dev": "webpack-dev-server --config './webpack.config.dev.js' --open --mode development",
+    "build": "cross-env BUILD_ENV=VERSION webpack  --mode production --progress --display-modules ",
+    "build-normal": "cross-env BUILD_ENV=NOMAL webpack  --mode production --progress --display-modules ",
+    "build-cdn": "cross-env BUILD_ENV=CDN webpack  --mode production --progress --display-modules "
   },
   "author": "cdc",
   "license": "ISC",
@@ -25,6 +28,7 @@
     "babel-plugin-import": "^1.8.0",
     "clean-webpack-plugin": "^1.0.0",
     "copy-webpack-plugin": "^4.6.0",
+    "cross-env": "^5.2.0",
     "css-loader": "^1.0.0",
     "eslint": "^5.11.0",
     "eslint-config-airbnb": "^17.1.0",

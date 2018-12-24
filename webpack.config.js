@@ -8,8 +8,15 @@ const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
 // 静态资源输出
 const CopyWebpackPlugin = require('copy-webpack-plugin')
+const config = require('./config')
 
-const publicPath = '/'
+let publicPath = '/'
+if (process.env.BUILD_ENV === 'VERSION') {
+  publicPath = config.webpack.versionPrefix || '/'
+} else if (process.env.BUILD_ENV === 'CDN') {
+  publicPath = config.webpack.cdnPrefix || '/'
+}
+
 const entry = {}
 const files = fs.readdirSync(path.join(__dirname, './src'))
 files.forEach(file => {
