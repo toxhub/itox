@@ -10,7 +10,7 @@ import {
 import '@babel/polyfill'
 
 import {LocaleProvider} from 'antd' // 这个是ant的语言
-import zh_CN from 'antd/lib/locale-provider/zh_CN'
+import zh_CN from 'antd/lib/locale-provider/zh_CN' // eslint-disable-line
 import 'antd/dist/antd.less'
 
 import {Provider} from 'mobx-react'

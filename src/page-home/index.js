@@ -1,3 +1,3 @@
 import asyncComponent from '../common/AsyncComponent'
 
-export default asyncComponent(async () => await import('./home'))
+export default asyncComponent(async () => import('./home'))

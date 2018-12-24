@@ -4,6 +4,7 @@
   "description": "",
   "main": "webpack.config.dev.js",
   "scripts": {
+    "server": "node app.js",
     "start": "webpack-dev-server --config './webpack.config.dev.js' --open --mode development",
     "build": "webpack  --mode production --progress"
   },
@@ -43,5 +44,18 @@
     "webpack-cli": "^3.1.0",
     "webpack-dev-server": "^3.1.8"
   },
-  "dependencies": {}
+  "dependencies": {
+    "axios": "^0.18.0",
+    "ejs": "^2.6.1",
+    "koa": "^2.6.2",
+    "koa-bodyparser": "^4.2.1",
+    "koa-router": "^7.4.0",
+    "koa-static": "^5.0.0",
+    "koa-views": "^6.1.5",
+    "lodash": "^4.17.11",
+    "moment": "^2.23.0",
+    "path-to-regexp": "^1.7.0",
+    "winston": "^3.1.0",
+    "winston-daily-rotate-file": "^3.5.1"
+  }
 }

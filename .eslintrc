@@ -104,6 +104,6 @@
     "window": false,
     "__DEV__": false,
     "__PRO__": false,
-    "require": true
+    "require": false
   }
 }
