@@ -6,3 +6,4 @@ test.js
 public/*
 view/*
 server/public
+dist

@@ -12,6 +12,10 @@ module.exports = {
   listenType: 'port', // 设置程序监听的类型是port还是文件file
   devPort: 8080, // 前端webpack dev的端口
   sockFile: path.join(__dirname, `../../${pkg.name}_${pkg.version}.sock`), // 设置程序监听的类型是文件监听的文件地址 去适配merak发包的部署方式
+  webpack: {
+    cdnPrefix: '/',
+    versionPrefix: `/${pkg.version}/`,
+  },
   render: {
     cdnPrefix: `/${pkg.version}/`,
     pages: [
