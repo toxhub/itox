@@ -10,7 +10,7 @@ import {
 import '@babel/polyfill'
 
 import {LocaleProvider} from 'antd' // 这个是ant的语言
-import zh_CN from 'antd/lib/locale-provider/zh_CN' // eslint-disable-line
+import zhCN from 'antd/lib/locale-provider/zh_CN'
 import 'antd/dist/antd.less'
 
 import {Provider} from 'mobx-react'
@@ -46,7 +46,7 @@ const App = () => (
 )
 
 render(
-  <LocaleProvider locale={zh_CN}>
+  <LocaleProvider locale={zhCN}>
     <Provider store={stores}>
       <App />
     </Provider>
