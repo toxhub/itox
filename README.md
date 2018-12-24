@@ -476,3 +476,30 @@ npm install --save-dev less-loader less
 
 ```
 
+
+### 支持 eslintrc
+
+```
+npm i  eslint --save-dev
+// 关于 eslint --init 可以不必执行，它主要的作用是在你当前文件夹下生成.eslintrc文件
+// 所谓扩展配置就是使用别人配置好的配置，我们选用 Airbnb 标准 它主要提供3种预安装包：Google标准、Airbnb标准和Standard标准。
+npm i eslint-config-airbnb --save-dev
+
+// a11y是accessibility（无障碍环境）的缩写，从第一个字母a到最后一个字母y，中间一共是11个字母，所以就叫a11y了，类似于i18n表示internationalization（国际化）一样。JSX主要是React会用到，虽然我们的项目里可能并不会用React，但是这个Airbnb标准必须要用到它，所以必须安装。
+npm i eslint-plugin-jsx-a11y --save-dev
+
+同上，Airbnb标准必需。是用来校验 import 的，比如不能加 .js 后缀
+npm i eslint-plugin-import --save-dev
+
+React支持
+前文说到 eslint 是一个完全插件化的东西，所以支持特定语言也很简单。，比如我们需要支持 react，那么我们直接安装 react 插件即可
+npm i eslint-plugin-react --save-dev
+
+如果不配置这个插件的话，会报 Parsing error: Unexpected token =。所以我们下载 npm i -g babel-eslint之后还需要在配置文件中加入 "parser": "babel-eslint"(配置方法见下文)
+
+npm i babel-eslint --save-dev
+
+运行 
+./node_modules/.bin/eslint .
+
+```

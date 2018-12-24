@@ -1,3 +1,3 @@
-import baseStore from './base';
+import baseStore from './base'
 
 export {baseStore}
