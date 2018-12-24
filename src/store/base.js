@@ -1,4 +1,7 @@
-import {observable, action, computed, runInAction} from 'mobx';
+import {
+  observable, action, computed, runInAction,
+} from 'mobx'
+
 class BaseStore {
   @observable text;
   @observable num;
@@ -6,16 +9,18 @@ class BaseStore {
   constructor() {
     this.num = 0
     this.text = 'Hello Word!'
-    this.isLogin = false;
+    this.isLogin = false
   }
+
   @computed get flag() {
-    return this.isLogin ? '登录了' : '没有登录';
+    return this.isLogin ? '登录了' : '没有登录'
   }
+
   @action
   login = (account, password) => {
-    console.log(account, password);
+    console.log(account, password)
 
-    /*fetch('').then(
+    /* fetch('').then(
       action('fetchRes', res => {
         return res.json()
       })).then(
@@ -24,26 +29,26 @@ class BaseStore {
       })).catch(
       action('fetchError', e => {
         console.log(e.message)
-      }))*/
+      })) */
     fetch('/api/admins/login', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         account,
-        password: md5(password)
-      })
+        password: md5(password),
+      }),
     })
       .then(res => {
         if (res.ok) {
           // this.isLogin = true;
           runInAction(() => {
-            this.isLogin = true;
+            this.isLogin = true
           })
-          return res.json();
+          return res.json()
         }
-        return 'wu';
+        return 'wu'
       })
       .then(data => {
         console.log(data)
@@ -52,10 +57,12 @@ class BaseStore {
         console.log(err)
       })
   }
+
   @action
   plus = () => {
     this.num = ++this.num
   }
+
   @action minus = () => {
     this.num = --this.num
   }
@@ -63,4 +70,4 @@ class BaseStore {
 
 const baseStore = new BaseStore()
 
-export default baseStore;
+export default baseStore

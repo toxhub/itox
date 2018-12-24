@@ -1,13 +1,13 @@
-import React from "react";
-import {render} from "react-dom";
+import React from 'react'
+import {render} from 'react-dom'
 
 import {
   BrowserRouter as Router,
   Route,
   NavLink,
-  Switch
+  Switch,
 } from 'react-router-dom'
-import "@babel/polyfill";
+import '@babel/polyfill'
 
 import {LocaleProvider} from 'antd' // 这个是ant的语言
 import zh_CN from 'antd/lib/locale-provider/zh_CN'
@@ -19,9 +19,10 @@ import * as stores from './store'
 
 // import Home from './page-home/home'
 import News from './page-news/news'
-import asyncComponent from './common/AsyncComponent';
-const Home = asyncComponent(() => import("./page-home/home"));
+import asyncComponent from './common/AsyncComponent'
 import Login from './page-login/login'
+
+const Home = asyncComponent(() => import('./page-home/home'))
 const App = () => (
   <Router>
     <div>
@@ -30,15 +31,15 @@ const App = () => (
           <ul>
             <li><NavLink exact to="/">首页</NavLink></li>
             <li><NavLink to="/news">新闻</NavLink></li>
-            <li><NavLink to='/login'>登录</NavLink></li>
+            <li><NavLink to="/login">登录</NavLink></li>
           </ul>
         </nav>
       </header>
       <Switch>
-        <Route exact path="/" component={Home}/>
-        <Route path="/news" component={News}/>
-        <Route path="/login" component={Login}/>
-        <Route path="/home" component={Home}/>
+        <Route exact path="/" component={Home} />
+        <Route path="/news" component={News} />
+        <Route path="/login" component={Login} />
+        <Route path="/home" component={Home} />
       </Switch>
     </div>
   </Router>
@@ -46,7 +47,7 @@ const App = () => (
 
 render(
   <LocaleProvider locale={zh_CN}>
-    <Provider store = {stores}>
+    <Provider store={stores}>
       <App />
     </Provider>
   </LocaleProvider>,
