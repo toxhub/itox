@@ -1,9 +1,11 @@
+import md5 from 'md5'
 import {
   observable, action, computed, runInAction,
 } from 'mobx'
+import io from '../common/io'
 
 class BaseStore {
-  @observable text;
+  @observable userInfo;
   @observable num;
   @observable isLogin;
   constructor() {
@@ -17,54 +19,34 @@ class BaseStore {
   }
 
   @action
-  login = (account, password) => {
+  login = async (account, password) => {
     console.log(account, password)
-
-    /* fetch('').then(
-      action('fetchRes', res => {
-        return res.json()
-      })).then(
-      action('fetchSuccess', data => {
-        this.detail = data.query.results.json;
-      })).catch(
-      action('fetchError', e => {
-        console.log(e.message)
-      })) */
-    fetch('/api/admins/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
+    const opts = {
+      body: {
         account,
         password: md5(password),
-      }),
+      },
+      // params: {
+      //   teamId: this.teamId,
+      //   bookId: this.bookId,
+      // },
+      // query: {
+      //   id: 1
+      // }
+    }
+    const {content} = await io.auth.dingtalkLogin(opts)
+    runInAction(() => {
+      this.userInfo = content
     })
-      .then(res => {
-        if (res.ok) {
-          // this.isLogin = true;
-          runInAction(() => {
-            this.isLogin = true
-          })
-          return res.json()
-        }
-        return 'wu'
-      })
-      .then(data => {
-        console.log(data)
-      })
-      .catch(err => {
-        console.log(err)
-      })
   }
 
   @action
   plus = () => {
-    this.num = ++this.num
+    this.num = this.num + 1
   }
 
   @action minus = () => {
-    this.num = --this.num
+    this.num = this.num - 1
   }
 }
 
