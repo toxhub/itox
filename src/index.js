@@ -12,7 +12,6 @@ import '@babel/polyfill'
 import {LocaleProvider} from 'antd' // 这个是ant的语言
 import zhCN from 'antd/lib/locale-provider/zh_CN'
 import 'antd/dist/antd.less'
-import './common/common.styl'
 import {Provider} from 'mobx-react'
 
 import * as stores from './store'

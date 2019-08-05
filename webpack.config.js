@@ -125,22 +125,6 @@ module.exports = {
         ],
       },
       {
-        test: /\.styl$/,
-        use: [
-          {
-            // MiniCssExtractPlugin 不支持热更新
-            loader: MiniCssExtractPlugin.loader,
-            options: {
-              // you can specify a publicPath here
-              // by default it use publicPath in webpackOptions.output
-              // publicPath: '../'
-            },
-          },
-          'css-loader',
-          'stylus-loader',
-        ],
-      },
-      {
         test: /(\.less)$/,
         use: [
           {
