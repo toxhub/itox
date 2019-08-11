@@ -12,16 +12,8 @@ import '@babel/polyfill'
 import {LocaleProvider} from 'antd' // 这个是ant的语言
 import zhCN from 'antd/lib/locale-provider/zh_CN'
 import 'antd/dist/antd.less'
-import {Provider} from 'mobx-react'
 
-import * as stores from './store'
 
-// import Home from './page-home/home'
-import News from './page-news/news'
-import asyncComponent from './common/AsyncComponent'
-import Login from './page-login/login'
-
-const Home = asyncComponent(() => import('./page-home/home'))
 const App = () => (
   <Router>
     <div>
@@ -34,21 +26,14 @@ const App = () => (
           </ul>
         </nav>
       </header>
-      <Switch>
-        <Route exact path="/" component={Home} />
-        <Route path="/news" component={News} />
-        <Route path="/login" component={Login} />
-        <Route path="/home" component={Home} />
-      </Switch>
     </div>
   </Router>
 )
 
 render(
   <LocaleProvider locale={zhCN}>
-    <Provider store={stores}>
       <App />
-    </Provider>
+  
   </LocaleProvider>,
   document.getElementById('root')
 )
