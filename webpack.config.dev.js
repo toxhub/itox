@@ -35,6 +35,7 @@ module.exports = {
               '@babel/preset-react',
             ],
             plugins: [
+              ['import', {libraryName: 'antd', libraryDirectory: 'es', style: 'less'}],
               '@babel/plugin-syntax-dynamic-import',
               ['@babel/plugin-proposal-decorators', {legacy: true}],
               ['@babel/plugin-proposal-class-properties', {loose: true}],
@@ -46,21 +47,43 @@ module.exports = {
       {
         test: /\.css$/,
         use: [
+          { loader: 'style-loader' },
           "css-loader"
         ]
       },
       {
-        test:  /\.less$/,
+        test: /\.less$/,
+        include: [/src/],
         use: [
-          'css-loader',
+          'style-loader',
           {
-            loader: "less-loader",
+            loader: 'css-loader',
             options: {
-              javascriptEnabled: true // 选择是ant的支持
-            }
-          }
-        ]
-      }
+              modules: true,
+            },
+          },
+          'less-loader'
+        ],
+      },
+      {
+          test: /\.less$/,
+          exclude: [/src/],
+          use: [
+            'style-loader',
+            {
+              loader: 'css-loader',
+              options: {
+                  importLoaders: 1
+              },
+            },
+            {
+              loader: 'less-loader', // compiles Less to CSS
+              options: {
+                javascriptEnabled: true // 选择是ant的支持
+              }
+            },
+          ],
+      },
     ]
   },
   plugins: [
