@@ -111,3 +111,50 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
   ]
 
 ```
+
+### 支持css
+
+通常情况下,webpack只对js文件提供支持,但是比如说less/sass/css/ES7等就不认识了,这时候就需要使用loaders来帮助它转化了
+
+```
+npm i -D css-loader
+```
+
+```
+  module: {
+    rules: [
+      {
+        test: /\.css$/,
+        use: [
+          "css-loader"
+        ]
+      }
+    ]
+  }
+  ```
+
+### 支持less的转换
+  ```
+  npm install -D less-loader less
+  ```
+
+  ```
+      {
+        test: /\.css$/,
+        use: [
+          "css-loader"
+        ]
+      },
+      {
+        test:  /\.less$/,
+        use: [
+          'css-loader',
+          {
+            loader: "less-loader",
+            options: {
+              javascriptEnabled: true // 选择是ant的支持
+            }
+          }
+        ]
+      }
+```

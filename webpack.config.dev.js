@@ -43,6 +43,24 @@ module.exports = {
           },
         },
       },
+      {
+        test: /\.css$/,
+        use: [
+          "css-loader"
+        ]
+      },
+      {
+        test:  /\.less$/,
+        use: [
+          'css-loader',
+          {
+            loader: "less-loader",
+            options: {
+              javascriptEnabled: true // 选择是ant的支持
+            }
+          }
+        ]
+      }
     ]
   },
   plugins: [
