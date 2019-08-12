@@ -59,7 +59,7 @@ module.exports = {
           {
             loader: 'css-loader',
             options: {
-              modules: true,
+              modules: true, // 启用/禁用 CSS 模块和设置模式
             },
           },
           'less-loader'
@@ -73,7 +73,7 @@ module.exports = {
             {
               loader: 'css-loader',
               options: {
-                  importLoaders: 1
+                  importLoaders: 1 // 在 css-loader 前应用的 loader 的数量
               },
             },
             {

@@ -7,7 +7,8 @@
     "test": "test"
   },
   "scripts": {
-    "dev": "webpack-dev-server --config './webpack.config.dev.js' --open --mode development"
+    "dev": "webpack-dev-server --config './webpack.config.dev.js' --open --mode development",
+    "ts-check": "tsc --noEmit"
   },
   "keywords": [],
   "author": "",
