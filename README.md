@@ -111,3 +111,138 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
   ]
 
 ```
+
+### 支持css
+
+通常情况下,webpack只对js文件提供支持,但是比如说less/sass/css/ES7等就不认识了,这时候就需要使用loaders来帮助它转化了
+
+```
+npm i -D css-loader
+```
+
+```
+  module: {
+    rules: [
+      {
+        test: /\.css$/,
+        use: [
+          "css-loader"
+        ]
+      }
+    ]
+  }
+  ```
+
+### 支持less的转换
+  ```
+  npm install -D less-loader less
+  ```
+
+  ```
+      {
+        test: /\.css$/,
+        use: [
+          "css-loader"
+        ]
+      },
+      {
+        test:  /\.less$/,
+        use: [
+          'css-loader',
+          {
+            loader: "less-loader",
+            options: {
+              javascriptEnabled: true // 选择是ant的支持
+            }
+          }
+        ]
+      }
+```
+
+### 使用style-loader
+style-loader通过插入<style>标记将CSS添加到DOM中。
+建议将 style-loader 与 css-loader 结合使用
+
+```
+npm install style-loader --save-dev
+```
+
+### 增加antd组件 
+
+```
+npm i --save antd 
+```
+
+```
+import { DatePicker } from 'antd';
+ReactDOM.render(<DatePicker />, mountNode);
+```
+
+引入样式
+
+```
+import 'antd/dist/antd.less'; // or 'antd/dist/antd.css'
+```
+
+webpack配置
+使用 babel-plugin-import（推荐）。
+
+```
+// .babelrc or babel-loader option
+{
+  "plugins": [
+    ["import", {
+      "libraryName": "antd",
+      "libraryDirectory": "es",
+      "style": "less" // `style: true` 会加载 less 文件
+    }]
+  ]
+}
+```
+
+```
+      {
+        test: /\.less$/,
+        include: [/src/],
+        use: [
+          'style-loader',
+          {
+            loader: 'css-loader',
+            options: {
+              modules: true,
+            },
+          },
+          'less-loader'
+        ],
+      },
+      {
+          test: /\.less$/,
+          exclude: [/src/],
+          use: [
+            'style-loader',
+            {
+              loader: 'css-loader',
+              options: {
+                  importLoaders: 1
+              },
+            },
+            {
+              loader: 'less-loader', // compiles Less to CSS
+              options: {
+                javascriptEnabled: true // 选择是ant的支持
+              }
+            },
+          ],
+      },
+```
+
+### react-router-dom
+```
+npm i -S react-router-dom  @types/react-router-dom
+```
+
+### 使用mobx来做数据管理
+
+```
+npm i -S mobx mobx-react 
+```
