@@ -7,8 +7,8 @@ export default {
       userId: 1,
       nickname: '长风',
       descr: '数澜科技Node.js团队',
-      avatar: 'https://cdn.nlark.com/yuque/0/2018/jpeg/87924/1534757757295-avatar/6592bc6c-77a3-48d5-9529-467043eca2d8.jpeg?x-oss-process=image/resize,m_fill,w_64,h_64/format,png', // eslint-disable-line
-    },
+      avatar: 'http://dtwave-cms.oss-cn-hangzhou.aliyuncs.com/1ecf1040-5406-4265-b378-14a39de537d0.png'
+    }
   },
   login: {
     success: true,
@@ -18,7 +18,7 @@ export default {
       userId: 1,
       nickname: '长风',
       descr: '数澜科技Node.js团队',
-      avatar: 'https://cdn.nlark.com/yuque/0/2018/jpeg/87924/1534757757295-avatar/6592bc6c-77a3-48d5-9529-467043eca2d8.jpeg?x-oss-process=image/resize,m_fill,w_64,h_64/format,png', // eslint-disable-line
+      avatar: 'http://dtwave-cms.oss-cn-hangzhou.aliyuncs.com/1ecf1040-5406-4265-b378-14a39de537d0.png' // eslint-disable-line
     },
   },
 }
