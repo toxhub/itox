@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 
-export default class User extends React.Component<any, any>{
+export default class Role extends React.Component<any, any>{
     constructor(props: any) {
         super(props);
     }
@@ -11,7 +11,7 @@ export default class User extends React.Component<any, any>{
     render() {
         return(
           <div>
-              <h1>Users</h1>
+              <h1>Role</h1>
           </div>
         );
     }

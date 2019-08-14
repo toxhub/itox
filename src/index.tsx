@@ -28,7 +28,8 @@ import Frame from './frame/frame'
 import Login from './page-login/login'
 import Home from './page-home/home'
 import User from './page-user/user'
-
+import Role from './page-role/role'
+import Setting from './page-setting/setting'
 
 class App extends React.Component {
   render() {
@@ -40,6 +41,8 @@ class App extends React.Component {
             <Switch>
               <Route path="/home" component={Home} />
               <Route path="/user" component={User} />
+              <Route path="/role" component={Role} />
+              <Route path="/setting" component={Setting} />
               <Route path="/404" render={() => <div style={{fontSize: 100}}>404</div>} />
               <Redirect from="/" to="/home" />
             </Switch>
