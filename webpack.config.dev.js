@@ -13,8 +13,13 @@ module.exports = {
     // publicPath: "https://...cdnpath.../assets/" // CDN 资源 URL 前缀
   },
   devServer: {
+    contentBase: path.join(__dirname, "./src/"), 
     inline: true,
-    port: 3333
+    port: 3333,
+    publicPath: '/',
+    historyApiFallback: true, //不跳转
+    host: '127.0.0.1',
+    hot: true,
   },
   resolve: {
     extensions: [".ts",".tsx",".js"]
@@ -59,7 +64,7 @@ module.exports = {
           {
             loader: 'css-loader',
             options: {
-              modules: true, // 启用/禁用 CSS 模块和设置模式
+              //modules: true, // 启用/禁用 CSS 模块和设置模式 启用的话样式会hash
             },
           },
           'less-loader'

@@ -236,3 +236,13 @@ webpack配置
       },
 ```
 
+### react-router-dom
+```
+npm i -S react-router-dom  @types/react-router-dom
+```
+
+### 使用mobx来做数据管理
+
+```
+npm i -S mobx mobx-react 
+```
