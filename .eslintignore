@@ -1,9 +1,0 @@
-out/*
-logs/*
-coverage/*
-node_modules/*
-test.js
-public/*
-view/*
-server/public
-dist

@@ -1,12 +1,11 @@
 
-import {request} from '../utils'
+import {request} from '../common/utils'
 import auth from './auth'
-
-const createIo = ioContent => {
-  const content = {}
-  const urlPrefix = '/api/v1/cms'
+const createIo = (ioContent: any) => {
+  const content: any = {}
+  const urlPrefix = '/api/v1/duc'
   Object.keys(ioContent).forEach(key => {
-    content[key] = async (data = {}) => {
+    content[key] = async (data: any = {}) => {
       const option = Object.assign({}, ioContent[key], data)
       option.url = (option.urlPrefix || urlPrefix) + option.url
       const result = await request(option)
