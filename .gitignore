@@ -8,6 +8,5 @@ dist
 .nyc_output
 test.js
 package-lock.json
-server/public/*
 config/config.js
 coverage
