@@ -3,10 +3,21 @@ const path = require('path')
 const fs = require('fs')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
+const {CleanWebpackPlugin} = require('clean-webpack-plugin')
+// 静态资源输出
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 const config = require('./config')
 
+let publicPath = '/'
+if (process.env.BUILD_ENV === 'VERSION') {
+  publicPath = config.versionPrefix || '/'
+} else if (process.env.BUILD_ENV === 'CDN') {
+  publicPath = config.cdnPrefix || '/'
+}
+
 const entry = {}
-// 获取src 目录下的js文件作为入口文件
 const files = fs.readdirSync(path.join(__dirname, './src'))
 files.forEach(file => {
   const stat = fs.lstatSync(path.join(__dirname, './src', file))
@@ -19,17 +30,19 @@ files.forEach(file => {
 })
 
 module.exports = {
-  entry,
+  entry: {
+    index:  path.join(__dirname, './src/index.tsx')
+  },
   output: {
     path: `${__dirname}/dist`,
     filename: '[name].js',
-    publicPath: '/',
+    publicPath,
     // publicPath: "https://...cdnpath.../assets/" // CDN 资源 URL 前缀
   },
   devServer: {
     contentBase: path.join(__dirname, "./src/"), 
     inline: true,
-    port: config.port,
+    port: 3333,
     publicPath: '/',
     historyApiFallback: true, //不跳转
     host: '127.0.0.1',
@@ -39,6 +52,14 @@ module.exports = {
     extensions: [".ts",".tsx",".js"]
   },
   optimization: {
+    minimizer: [
+      new UglifyJsPlugin({
+        cache: true,
+        parallel: true,
+        sourceMap: true, // set to true if you want JS source maps
+      }),
+      new OptimizeCSSAssetsPlugin({}),
+    ],
     splitChunks: {
       // 表示显示块的范围，有三个可选值：initial(初始块)、async(按需加载块)、all(全部块)，默认为all;
       chunks: 'all',
@@ -200,24 +221,41 @@ module.exports = {
     ]
   },
   plugins: [
+    new CopyWebpackPlugin([{
+      from: path.resolve(__dirname, './src/assets'),
+      to: './assets',
+      ignore: ['.*'],
+    }]),
+    new CleanWebpackPlugin({
+    
+      verbose: true, // 开启在控制台输出信息
+      // dry Use boolean "true" to test/emulate delete. (will not remove files).
+      // Default: false - remove files
+      dry: false,
+    }),
     new MiniCssExtractPlugin({
       // Options similar to the same options in webpackOptions.output
       // both options are optional
       filename: '[name].css',
       chunkFilename: '[id].css',
     }),
-    new webpack.HotModuleReplacementPlugin()
-  ]
+    new webpack.HotModuleReplacementPlugin(),
+    new HtmlWebpackPlugin({
+      template: path.join(__dirname, `./src/html/index.html`), // 指定模板路径
+      filename: 'index.html',
+      inject: true,
+      chunks: ['vendor', 'index'],
+    })
+  ],
+  externals: {
+    antd: 'antd',
+  },
 }
 
 Object.keys(entry).forEach(fileIndex => {
-  const filename = fileIndex
-  if (fileIndex !== 'index') {
-    // filename = `${fileIndex}/index`
-  }
   module.exports.plugins.push(new HtmlWebpackPlugin({
     template: path.join(__dirname, `./src/html/${fileIndex}.html`), // 指定模板路径
-    filename: `${filename}.html`,
+    filename: `${fileIndex}.html`,
     inject: true,
     chunks: ['vendor', fileIndex],
   }))

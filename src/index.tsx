@@ -21,6 +21,9 @@ import globalStore from './store/global_store';
 const stores = {globalStore}
 
 import './common/common.less'
+
+import './common/common.styl'
+
 import './index.css'
 
 import Frame from './frame/frame'
