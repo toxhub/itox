@@ -1,7 +1,197 @@
-.header {
-  .logo {
-    font-size: 18px;
-    font-weight: bold;
-    float: left;
+@backColor: #2D2D2D;
+@siderColor: #1D1D1D;
+@hoverColor: rgba(0,0,0,0.5);
+@logoColor: #0078FF;
+
+
+@color: #FFC2D9, #FFC8C2, #FFE6C2, #FFFDC2, #E8FFC2, #CAFFC2, #C2FFE3,  #C2EEFF, #C2D9FF, #CCC2FF;
+
+.for(@data, @i: 0) when(@i < length(@data)) {
+  @item: extract(@data, @i + 1);
+  .side-color-@{i} {
+    &.active, li:hover, li.active{
+      color: @item;
+      background-color: @hoverColor;
+      border-left: @item 2px solid !important;
+    }
   }
+  .for(@data, (@i + 1));
+}
+
+.for(@color);
+
+.frame {
+  min-width: 1200px;
+  .frame-header {
+    height: 48px;
+    background-color: #FFF;
+    color: #999999;
+    z-index: 2;
+    box-shadow: 0px 0px 4px rgba(0,0,0,0.2);
+    .header-container{
+       height: 100%;
+      .header-front{
+        min-width: 176px;
+        line-height: 48px;
+        cursor: pointer;
+        font-size: 16px;
+        .logo{
+          height: 34px !important;
+          margin: 0 8px;
+          vertical-align: middle;
+        }
+      }
+      .header-behind {
+        .avatar {
+          display: inline-block;
+          width: 32px;
+          height: 32px;
+          border-radius: 50%;
+          text-align: center;
+          line-height: 32px;
+          font-size: 16px;
+          background-color: @logoColor;
+          color: #FFF;
+          vertical-align: middle;
+        }
+      }
+    }
+    .nav {
+      margin-left: 16px;
+      .nav-split {
+        margin: 0 8px
+      }
+       
+    }
+  }
+  //主体
+  .frame-main  {
+    height: calc(100vh - 48px);
+    font-size: 12px;
+    .side {
+      z-index: 9;
+      width: 40px;
+      flex: none;
+      height: 100%;
+      color: #FFF;
+      background-color: @backColor;
+      transition: all 0.2s ease-in-out;
+      box-shadow: 4px 0px 0px rgba(0,0,0,0.07);
+      position: relative;
+      padding-bottom: 36px;
+      .side-list {
+        height: 100%;
+        overflow-x :hidden;
+        overflow-y: auto;
+        font-size: 12px;
+        .side-item {
+          display: block;
+          width: 100%;
+          height: 40px;
+          line-height: 40px;
+          cursor: default !important;
+          position: relative;
+          background-color: @backColor;
+          object, svg {
+            cursor: pointer;
+            vertical-align: middle;
+            margin: 0 10px;
+          }
+          .product-mask {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 40px;
+            height: 40px;
+            opacity: 0;
+          }
+          &:hover, &.active {
+            background-color: #000000;
+          }
+          &.active object, &.active svg {
+            margin-left: 8px;
+          }
+     
+        }
+      }// sider-list
+      .subtitle {
+        flex: auto;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        word-break: keep-all;
+        white-space: nowrap;
+        outline: none;
+      }
+      .pop-submenu {
+        position: absolute;
+      }
+      .submenu {
+        width: 120px;
+        background-color: @siderColor;
+        color: #FFF;
+        transition: all 0.1s ease-in-out 0.2s;
+        box-shadow: 1px 1px 5px rgba(0,0,0,0.4);
+        ul, li {
+          list-style: none;
+          padding: 0;
+          margin: 0;
+        }
+        li {
+          position: relative;
+          height: 40px;
+          line-height: 40px;
+          padding: 0 8px;
+          border-left: #000 2px solid;
+          display: flex;
+          align-items: center;
+          cursor: pointer;
+          &:hover > .cf-submenu {
+            left: 100%;
+          }
+          .subtitle {
+            flex: auto;
+            overflow: hidden;
+            text-overflow :ellipsis;
+            word-break: keep-all;
+            white-space: nowrap;
+            outline: none;
+          }
+        }
+      }
+      .submenu-child {
+        position: absolute;
+        top: 0;
+        left: -9999px;
+        z-index: 1;
+      }
+      .collapsed-icon{
+        display: block;
+        width: 40px;
+        line-height: 36px;
+        cursor: pointer;
+        position: absolute;
+        bottom: 0;
+        background-color: #000000;
+        transition: all 0.2s ease-in-out;
+        outline: none;
+        img {
+          width: 16px;
+          margin: 0 12px;
+        }
+      }
+    } // end sider
+    .collapsed {
+      white-space: nowrap;
+      width: 176px;
+      .collapsed-icon {
+        width: 176px;
+      }
+    }
+    .frame-container {
+      flex: auto;
+      font-size: 12px;
+    }
+
+  } //end frame-main
+    
 }

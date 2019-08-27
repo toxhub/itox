@@ -5,7 +5,6 @@ import {ConfigProvider, DatePicker} from 'antd'
 import zh_CN from 'antd/es/locale-provider/zh_CN';
 import '@babel/polyfill'
 
-import 'antd/dist/antd.less'; 
 import {
   Router,
   Route,
@@ -17,38 +16,48 @@ import history from './common/history'
 
 
 import {Provider} from 'mobx-react'
-import globalStore from './store/global_store';
+import globalStore from './store/global-store';
 const stores = {globalStore}
 
-import './common/common.less'
-import './index.css'
+import 'antd/dist/antd.less'; 
+import './common/flexbox.css'
+import './common/common.styl'
+import './common/dt-ant-12.styl'
 
-import Frame from './frame/frame'
+import Frame from './frame'
 
 import Login from './page-login/login'
 import Home from './page-home/home'
-import User from './page-user/user'
-import Role from './page-role/role'
-import Setting from './page-setting/setting'
+
+import DocManage from './page-doc-manage'
+import DocMy from './page-doc-my'
+import AppSearch from './page-app-search'
+import OrgMember from './page-org-member'
+import OrgRole from './page-org-role'
+import OrgGroup from './page-org-group'
 
 class App extends React.Component {
   render() {
     return (
-      <Router  history={history}>
+      <Router  history={history} basename="doc">
         <Switch>
-          <Route path="/login" component={Login} />
+          <Route path={ window.pathPrefix + "/login"} component={Login} />
           <Frame>
             <Switch>
-              <Route path="/home" component={Home} />
-              <Route path="/user" component={User} />
-              <Route path="/role" component={Role} />
-              <Route path="/setting" component={Setting} />
-              <Route path="/404" render={() => <div style={{fontSize: 100}}>404</div>} />
-              <Redirect from="/" to="/home" />
+              <Route path={window.pathPrefix + "/home"} component={Home} />
+              <Route path={window.pathPrefix + "/doc/manage"} component={DocManage} />
+              <Route path={window.pathPrefix + "/doc/my"} component={DocMy} />
+              <Route path={window.pathPrefix + "/app/search"} component={AppSearch} />
+              <Route path={window.pathPrefix + "/organization/member"} component={OrgMember} />
+              <Route path={window.pathPrefix + "/organization/role"} component={OrgRole} />
+              <Route path={window.pathPrefix + "/organization/group"} component={OrgGroup} />
+              <Route path={window.pathPrefix + "/404"} render={() => <div style={{fontSize: 100}}>404</div>} />
+              <Redirect from={window.pathPrefix || "/"} to={window.pathPrefix + "/doc/manage"} />
+              <Redirect from="/" to={window.pathPrefix + "/doc/manage"} />
             </Switch>
           </Frame>
        </Switch>
-       </Router>
+      </Router>
     )
   }
 }

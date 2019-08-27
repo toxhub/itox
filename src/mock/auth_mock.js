@@ -1,6 +1,6 @@
 export default {
   loginInfo: {
-    success: false,
+    success: true,
     message: '',
     code: 0,
     content: {

@@ -1,3 +1,6 @@
+
+开发： `npm run dev`
+
 ### 初始化，生成package.json和tsconfig.json
 
 ```
@@ -237,6 +240,7 @@ webpack配置
 ```
 
 ### react-router-dom
+
 ```
 npm i -S react-router-dom  @types/react-router-dom
 ```
@@ -246,3 +250,148 @@ npm i -S react-router-dom  @types/react-router-dom
 ```
 npm i -S mobx mobx-react 
 ```
+
+###支持 stylus
+
+```
+npm i -S stylus stylus-loader
+```
+
+```
+      {
+        test: /\.styl$/,
+        use: [
+          'css-loader',
+          'stylus-loader',
+        ],
+        include: [path.resolve(__dirname, 'src')],
+        exclude: /node_modules/,
+      },
+```
+
+### 使用MiniCssExtractPlugin 插件提取css到一个文件
+
+```
+npm i -D mini-css-extract-plugin
+```
+
+
+
+### 静态文件的处理
+
+清除dist目录文件 ，拷贝asset文件到dist目录下
+
+```
+npm i clean-webpack-plugin copy-webpack-plugin --save-dev
+  plugins: [ // 执行顺序是反着的
+    new CopyWebpackPlugin([{
+      from: path.resolve(__dirname, './src/assets'),
+      to: './assets',
+      ignore: ['.*'],
+    }]),
+    new CleanWebpackPlugin(['dist'], {
+      root: path.resolve(__dirname), // 根目录
+      // verbose Write logs to console.
+      verbose: true, // 开启在控制台输出信息
+      // dry Use boolean "true" to test/emulate delete. (will not remove files).
+      // Default: false - remove files
+      dry: false,
+    }),
+  ]
+
+
+
+```
+
+
+### 提取出css样式并压缩
+
+之前直接使用 minimize: true 在匹配到css后直接压缩
+
+遇到的问题：
+项目是用了autoprefix自动添加前缀，这样压缩，会导致添加的前缀丢失
+
+解决：使用插件 optimize-css-assets-webpack-plugin
+
+new OptimizeCSSAssetsPlugin({
+    assetNameRegExp: /\.css\.*(?!.*map)/g,  //注意不要写成 /\.css$/g
+    cssProcessor: require('cssnano'),
+    cssProcessorOptions: {
+        discardComments: { removeAll: true },
+        // 避免 cssnano 重新计算 z-index
+        safe: true,
+        // cssnano 集成了autoprefixer的功能
+        // 会使用到autoprefixer进行无关前缀的清理
+        // 关闭autoprefixer功能
+        // 使用postcss的autoprefixer功能
+        autoprefixer: false
+    },
+    canPrint: true
+}),
+```
+npm install uglifyjs-webpack-plugin --save-dev
+npm install  optimize-css-assets-webpack-plugin --save-dev
+```
+```js
+const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
+module.exports = {
+  optimization: {
+    minimizer: [
+      new UglifyJsPlugin({
+        cache: true,
+        parallel: true,
+        sourceMap: true // set to true if you want JS source maps
+      }),
+      new OptimizeCSSAssetsPlugin({})
+    ]
+  },
+  plugins: [
+    new MiniCssExtractPlugin({
+      filename: "[name].css",
+      chunkFilename: "[id].css"
+    })
+  ],
+  module: {
+    rules: [
+      {
+        test: /\.css$/,
+        use: [
+          MiniCssExtractPlugin.loader,
+          "css-loader"
+        ]
+      }
+    ]
+  }
+}
+```
+
+
+### cross-env 支持多环境变量
+
+### classnames
+
+```
+npm install classnames --save
+```
+
+```
+<div className=classnames({
+    'class1': true,
+    'class2': true
+    )>
+</div>
+
+classNames('foo', 'bar'); // => 'foo bar'
+classNames('foo', { bar: true }); // => 'foo bar'
+classNames({ 'foo-bar': true }); // => 'foo-bar'
+classNames({ 'foo-bar': false }); // => ''
+classNames({ foo: true }, { bar: true }); // => 'foo bar'
+classNames({ foo: true, bar: true }); // => 'foo bar'
+```
+
+
+### svg-sprite-loader 来支持雪碧图标
+
+注意不要和url-loader加载路径共同使用
