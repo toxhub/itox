@@ -1,0 +1,150 @@
+/* 覆盖antd的默认样式，特别是antd@3.1.1，默认14px大小，太恶心了 */
+.dt-ant-12
+  font-family "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif
+  /*-webkit-font-smoothing antialiased
+  -moz-osx-font-smoothing grayscale*/
+  .ant-confirm-body .ant-confirm-title
+    word-break break-word
+  .ant-form-item .ant-calendar-picker
+    width 100% !important
+  .ant-table,
+  .ant-btn,
+  //.ant-input,
+  .ant-input-number,
+  .ant-select,
+  .ant-select-dropdown,
+  .ant-modal,
+  .ant-modal-body,
+  .ant-confirm-body .ant-confirm-content,
+  .ant-form,
+  .ant-form label,
+  .ant-form-item,
+  .ant-time-picker,
+  .ant-time-picker-input,
+  .ant-time-picker-panel-inner,
+  .ant-time-picker-panel-select,
+  .ant-checkbox,
+  .ant-dropdown-menu-item,
+  .ant-dropdown-menu-submenu-title,
+  .ant-popover,
+  .ant-popover-message,
+  .ant-card,
+  .ant-pagination,
+  .ant-calendar,
+  .ant-calendar-range .ant-calendar-input,
+  .ant-calendar-range .ant-calendar-time-picker-input,
+  .ant-notification-notice-with-icon .ant-notification-notice-description,
+  .ant-cascader-picker,
+  .ant-cascader-menus,
+  .ant-tabs,
+  .ant-tabs-small .ant-tabs-nav-container,
+  .ant-tree,
+  .ant-collapse,
+  .ant-tooltip,
+  .ant-menu-vertical .ant-menu-item, .ant-menu-vertical-left .ant-menu-item, .ant-menu-vertical-right .ant-menu-item, .ant-menu-inline .ant-menu-item, .ant-menu-vertical .ant-menu-submenu-title, .ant-menu-vertical-left .ant-menu-submenu-title, .ant-menu-vertical-right .ant-menu-submenu-title, .ant-menu-inline .ant-menu-submenu-title,
+  .ant-checkbox-wrapper, .ant-checkbox-group,
+  .ant-radio-group, .ant-checkbox-group
+    font-size 12px
+  .ant-btn-lg,
+  .ant-modal-title,
+  .ant-confirm-body .ant-confirm-title,
+  .ant-notification-notice-with-icon .ant-notification-notice-message,
+  .ant-steps-item-title
+    font-size 14px
+
+  .ant-table
+    .ant-table-tbody>tr>td, .ant-table-thead>tr>th
+      padding 16px 8px
+  .ant-form
+    .ant-form-item-required:before
+      font-size 12px
+    .ant-form-item
+      margin-bottom 16px
+    .ant-form-item-with-help
+      margin-bottom 0px
+    .ant-form-item-label
+      text-align left
+  .dt-form-column
+    .ant-form-item-label
+      text-align right
+  .ant-card
+    .ant-card-head
+      background-color #f7f7f7
+      border 0
+      height 40px
+      min-height 40px
+      line-height 40px
+      padding 0 20px
+    .ant-card-head-title
+      font-size 14px
+      padding 0
+    .ant-card-extra
+      padding 0
+  .ant-pagination
+    .ant-pagination-item, .ant-pagination-total-text, .ant-pagination-jump-next, .ant-pagination-jump-prev, .ant-pagination-next, .ant-pagination-prev, .ant-pagination-options-quick-jumper, .ant-pagination-options-quick-jumper input, .ant-select-selection--single
+      font-size 12px
+
+  /*.ant-tree
+    li .ant-tree-node-content-wrapper
+      height 30px
+      line-height 30px*/
+  /*.ant-collapse
+    >.ant-collapse-item
+      >.ant-collapse-header
+        padding 8px 0 8px 32px
+        .arrow
+          line-height 40px
+          transform scale(0.75) rotate(0)
+        &[aria-expanded=true] .arrow
+          transform scale(0.75) rotate(90deg)
+  .ant-steps
+    .ant-steps-item-icon
+      width 28px
+      height 28px
+      line-height 28px
+      font-size 14px
+      border-radius 50%
+  .ant-time-picker
+    width 107px*/
+  .ant-modal-footer
+    .ant-btn
+      font-size 14px
+  .ant-select-lg
+    .ant-select-selection--single
+      height 32px
+    .ant-select-selection__rendered
+      line-height 32px
+  .ant-badge-status-default
+    background-color rgba(0, 0, 0, 0.5)
+  .ant-badge-status-success
+    background-color #52c41a
+  .ant-badge-status-processing
+    background-color #1890ff
+  .ant-badge-status-pending
+    background-color #2acfff
+
+
+
+/* Customize website's scrollbar like Mac OS
+Not supports in Firefox and IE */
+
+/* total width */
+body::-webkit-scrollbar {
+  background-color:#fff;
+  width:16px
+}
+
+/* background of the scrollbar except button or resizer */
+body::-webkit-scrollbar-track {
+  background-color:#fff
+}
+
+/* scrollbar itself */
+body::-webkit-scrollbar-thumb {
+  background-color:#babac0;
+  border-radius:16px;
+  border:4px solid #fff
+}
+
+/* set button(top and bottom of the scrollbar) */
+body::-webkit-scrollbar-button {display:none}
