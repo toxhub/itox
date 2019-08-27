@@ -370,3 +370,28 @@ module.exports = {
 
 ### cross-env 支持多环境变量
 
+### classnames
+
+```
+npm install classnames --save
+```
+
+```
+<div className=classnames({
+    'class1': true,
+    'class2': true
+    )>
+</div>
+
+classNames('foo', 'bar'); // => 'foo bar'
+classNames('foo', { bar: true }); // => 'foo bar'
+classNames({ 'foo-bar': true }); // => 'foo-bar'
+classNames({ 'foo-bar': false }); // => ''
+classNames({ foo: true }, { bar: true }); // => 'foo bar'
+classNames({ foo: true, bar: true }); // => 'foo bar'
+```
+
+
+### svg-sprite-loader 来支持雪碧图标
+
+注意不要和url-loader加载路径共同使用

@@ -31,9 +31,26 @@ module.exports = {
     inline: true,
     port: config.port,
     publicPath: '/',
+    // historyApiFallback: {
+    //   disableDotRule: true,
+    //   // 指明哪些路径映射到哪个html
+    //   // 否则都指向index.html
+    //   rewrites: [
+    //     {from: /^\/admin\//, to: '/admin.html'},
+    //   ],
+    // },
     historyApiFallback: true, //不跳转
     host: '127.0.0.1',
     hot: true,
+    proxy: config.proxy,
+    // proxy: {
+    //   '/api/*': {
+    //     target: `http://localhost:${config.port}`,
+    //     changeOrigin: true, // 支持跨域请求
+    //     secure: true, // 支持 https
+    //   },
+    // },
+
   },
   resolve: {
     extensions: [".ts",".tsx",".js"]
@@ -188,7 +205,7 @@ module.exports = {
       },
       {
         test: /\.(jpg|jpeg|png|gif|svg)$/,
-        exclude: [/src/],
+        include: [path.resolve(__dirname, './src/assets')],
         use: [{
           loader: 'url-loader',
           query: {
@@ -196,6 +213,15 @@ module.exports = {
             limit: 1024 * 10,
           },
         }],
+      },
+      {
+        test: /\.svg$/,
+        include: [
+          path.resolve(__dirname, './src/icon'),
+        ],
+        use: [
+          {loader: 'svg-sprite-loader'},
+        ],
       },
     ]
   },

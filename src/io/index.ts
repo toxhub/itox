@@ -3,7 +3,7 @@ import {request} from '../common/utils'
 import auth from './auth'
 const createIo = (ioContent: any) => {
   const content: any = {}
-  const urlPrefix = '/api/v1/duc'
+  const urlPrefix = window.pathPrefix + '/api/v1/duc'
   Object.keys(ioContent).forEach(key => {
     content[key] = async (data: any = {}) => {
       const option = Object.assign({}, ioContent[key], data)

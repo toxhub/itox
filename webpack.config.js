@@ -1,6 +1,7 @@
 const webpack = require('webpack')
 const path = require('path')
 const fs = require('fs')
+const pkg = require('./package')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
@@ -11,6 +12,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 const config = require('./config')
 
 let publicPath = '/'
+
 if (process.env.BUILD_ENV === 'VERSION') {
   publicPath = config.versionPrefix || '/'
 } else if (process.env.BUILD_ENV === 'CDN') {
@@ -34,7 +36,7 @@ module.exports = {
     index:  path.join(__dirname, './src/index.tsx')
   },
   output: {
-    path: `${__dirname}/dist`,
+    path: `${__dirname}/dist/${pkg.version}`,
     filename: '[name].js',
     publicPath,
     // publicPath: "https://...cdnpath.../assets/" // CDN 资源 URL 前缀
@@ -116,7 +118,7 @@ module.exports = {
               '@babel/preset-react',
             ],
             plugins: [
-              ['import', {libraryName: 'antd', libraryDirectory: 'es', style: 'less'}],
+              ['import', {libraryName: 'antd', style: 'less'}],
               '@babel/plugin-syntax-dynamic-import',
               ['@babel/plugin-proposal-decorators', {legacy: true}],
               ['@babel/plugin-proposal-class-properties', {loose: true}],
@@ -209,7 +211,7 @@ module.exports = {
       },
       {
         test: /\.(jpg|jpeg|png|gif|svg)$/,
-        exclude: [/src/],
+        include: [path.resolve(__dirname, './src/assets')],
         use: [{
           loader: 'url-loader',
           query: {
@@ -217,6 +219,15 @@ module.exports = {
             limit: 1024 * 10,
           },
         }],
+      },
+      {
+        test: /\.svg$/,
+        include: [
+          path.resolve(__dirname, './src/icon'),
+        ],
+        use: [
+          {loader: 'svg-sprite-loader'},
+        ],
       },
     ]
   },
@@ -240,15 +251,8 @@ module.exports = {
       chunkFilename: '[id].css',
     }),
     new webpack.HotModuleReplacementPlugin(),
-    new HtmlWebpackPlugin({
-      template: path.join(__dirname, `./src/html/index.html`), // 指定模板路径
-      filename: 'index.html',
-      inject: true,
-      chunks: ['vendor', 'index'],
-    })
   ],
   externals: {
-    antd: 'antd',
   },
 }
 
