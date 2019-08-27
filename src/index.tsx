@@ -22,7 +22,6 @@ const stores = {globalStore}
 import 'antd/dist/antd.less'; 
 import './common/flexbox.css'
 import './common/common.styl'
-import './common/dt-ant-12.styl'
 
 import Frame from './frame'
 

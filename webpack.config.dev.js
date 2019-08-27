@@ -27,19 +27,19 @@ module.exports = {
     // publicPath: "https://...cdnpath.../assets/" // CDN 资源 URL 前缀
   },
   devServer: {
-    contentBase: path.join(__dirname, "./src/"), 
+    contentBase: path.join(__dirname, "./src/"),  //本地服务器所加载的页面所在的目录
     inline: true,
     port: config.port,
     publicPath: '/',
-    // historyApiFallback: {
-    //   disableDotRule: true,
-    //   // 指明哪些路径映射到哪个html
-    //   // 否则都指向index.html
-    //   rewrites: [
-    //     {from: /^\/admin\//, to: '/admin.html'},
-    //   ],
-    // },
-    historyApiFallback: true, //不跳转
+    historyApiFallback: {
+      disableDotRule: true,
+      // 指明哪些路径映射到哪个html
+      // 否则都指向index.html
+      // 下面这个可以优化
+      rewrites: [
+        {from: /^\/admin/, to: '/admin.html'},
+      ],
+    },
     host: '127.0.0.1',
     hot: true,
     proxy: config.proxy,
@@ -52,6 +52,7 @@ module.exports = {
     // },
 
   },
+  devtool: "source-map",
   resolve: {
     extensions: [".ts",".tsx",".js"]
   },
