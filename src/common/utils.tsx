@@ -1,4 +1,4 @@
-import {message} from 'antd'
+import {message, Modal} from 'antd'
 import history from './history'
 import React, {Component} from 'react'
 import moment from 'moment'
@@ -30,6 +30,7 @@ export function asyncComponent(importComponent: any) {
   return AsyncComponent
 }
 
+// ajax 请求的统一封装
 export async function request(option: any = {}) {
   console.log(option)
   option = Object.assign(
@@ -107,29 +108,6 @@ export async function request(option: any = {}) {
   console.log('fetch return', retData)
   return retData
 }
-// 暂时添加
-window.__userConfig = {
-  // tenantId: 4,
-}
-
-export function getUserConfig(param) {
-  const userConfig = window.__userConfig || {}
-  if (param) {
-    return userConfig[param]
-  }
-  return userConfig
-}
-
-// 用于冻结__keeper的值，防止getKeeper取到之前被篡改
-export function freezeKeeper() {
-  window.keeper = Object.freeze(window.__keeper)
-}
-
-// 从__keeper获取部分信息
-export function getKeeper(key) {
-  const keeper = window.keeper || {}
-  return keeper[key]
-}
 
 // 统一成功提示
 export function successTip(content) {
@@ -158,13 +136,6 @@ export function warningTip(content) {
   message.warning(content)
 }
 
-
-function myToFixed(num, divisor, isToFixed) {
-  if (isToFixed) {
-    return Math.round((num * 100) / divisor) / 100
-  }
-  return Math.round(num / divisor)
-}
 
 
 // 计算文件大小
@@ -207,50 +178,8 @@ export function calcSize(size = 0, defaultUnit = 'B', isToFixed = true) {
   return `${size} ${defaultUnit}`
 }
 
-// 获取文档类型文字
-export function getFileTypeText(fileType) {
-  let text = ''
-  switch (fileType) {
-    case 'project_file':
-      text = '项目文件'
-      break
-    case 'project_news':
-      text = '项目动态'
-      break
-    case 'work_brief_report':
-      text = '工作简报'
-      break
-    case 'reference':
-      text = '参考资料'
-      break
-    case 'solution_doc':
-      text = '方案文档'
-      break
-    case 'intellectual_property':
-      text = '知识产权'
-      break
-    default:
-      text = '其他'
-  }
-  return text
-}
 
-export function checkAuthCode(code: any) {
-  const userAuthCodeList = window.userAuthCode || []
-  return userAuthCodeList.includes(code)
-}
-
-// 转化时间显示
+// 时间戳转化时间显示
 export function getFormatTime(time: string, format = 'YYYY-MM-DD') {
   return time ? moment(time).format(format) : ''
 }
-
-
-const {apiV = '1'} = window
-const {pathPrefix = ''} = window
-export const dubheApi = `${pathPrefix}/api/v${apiV}/dubhe`
-export const resourceApi = `${pathPrefix}/api/v${apiV}/resource`
-export const accountApi = `${pathPrefix}/account/v${apiV}`
-export const entApi = `${pathPrefix}/api/v${apiV}/ent`
-export const dataApi = `${pathPrefix}/api/v${apiV}/megrez_shuqi`
-export const uicApi = `${pathPrefix}/api/v${apiV}/uic`
