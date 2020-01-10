@@ -1,7 +1,7 @@
 import * as React from 'react'
 
 import * as ReactDOM from 'react-dom'
-import {ConfigProvider, DatePicker} from 'antd'
+import {ConfigProvider} from 'antd'
 import zh_CN from 'antd/es/locale-provider/zh_CN';
 import '@babel/polyfill'
 
@@ -38,7 +38,7 @@ import OrgGroup from './page-org-group'
 class App extends React.Component {
   render() {
     return (
-      <Router  history={history} basename="doc">
+      <Router  history={history} >
         <Switch>
           <Route path={ window.pathPrefix + "/login"} component={Login} />
           <Frame>
