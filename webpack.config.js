@@ -11,6 +11,8 @@ const {CleanWebpackPlugin} = require('clean-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const config = require('./config')
 
+fs.writeFileSync(path.join(__dirname, './config/conf.json'), JSON.stringify(config.conf.build, null, '\t'))
+
 let publicPath = '/'
 
 if (process.env.BUILD_ENV === 'VERSION') {
@@ -18,7 +20,6 @@ if (process.env.BUILD_ENV === 'VERSION') {
 } else if (process.env.BUILD_ENV === 'CDN') {
   publicPath = config.cdnPrefix || '/'
 }
-
 const entry = {}
 const files = fs.readdirSync(path.join(__dirname, './src'))
 files.forEach(file => {
@@ -30,11 +31,10 @@ files.forEach(file => {
     }
   }
 })
+console.log('publicPath', publicPath)
 
 module.exports = {
-  entry: {
-    index:  path.join(__dirname, './src/index.tsx')
-  },
+  entry: entry,
   output: {
     path: `${__dirname}/dist/${pkg.version}`,
     filename: '[name].js',
@@ -42,7 +42,7 @@ module.exports = {
     // publicPath: "https://...cdnpath.../assets/" // CDN 资源 URL 前缀
   },
   devServer: {
-    contentBase: path.join(__dirname, "./src/"), 
+    contentBase: path.join(__dirname, "./src/"),
     inline: true,
     port: 3333,
     publicPath: '/',
@@ -238,7 +238,7 @@ module.exports = {
       ignore: ['.*'],
     }]),
     new CleanWebpackPlugin({
-    
+
       verbose: true, // 开启在控制台输出信息
       // dry Use boolean "true" to test/emulate delete. (will not remove files).
       // Default: false - remove files
@@ -264,3 +264,18 @@ Object.keys(entry).forEach(fileIndex => {
     chunks: ['vendor', fileIndex],
   }))
 })
+
+let a = {
+  a: "<!DOCTYPE html>\n" +
+  "<html lang=\"en\">\n" +
+  "<head>\n" +
+  "    <meta charset=\"UTF-8\">\n" +
+  "    <title>Render-Server</title>\n" +
+  "<link href=\"/vendor.css\" rel=\"stylesheet\"><link href=\"/index.css\" rel=\"stylesheet\"></head>\n" +
+  "<script>\n" +
+  "</script>\n" +
+  "<body>\n" +
+  "<div id=\"root\" style=\"width: 100%; height: 100%;\"></div>\n" +
+  "<script type=\"text/javascript\" src=\"/vendor.js\"></script><script type=\"text/javascript\" src=\"/index.js\"></script></body>\n" +
+  "</html>\n"
+}

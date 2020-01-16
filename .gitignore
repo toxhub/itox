@@ -9,4 +9,5 @@ dist
 test.js
 package-lock.json
 config/config.js
+config/conf.json
 coverage

@@ -12,11 +12,19 @@ module.exports = {
   versionPrefix: `/${pkg.name}/${pkg.version}/`,
   // 接口的转发
   proxy: {
-    '/api/*': {
-      target: `http://192.168.9.68:9118`,
+    '/render-server/api/*': {
+      target: `http://127.0.0.1:9102`,
       changeOrigin: true, // 支持跨域请求
       secure: true, // 支持 https
     },
   },
-
+  // 这个配置 config/conf.json中的数据
+  conf: {
+    dev: {
+      pathPrefix: '/render-server',
+      apiPrefix: '/api',
+      debug: 'true'
+    },
+    build: {}
+  }
 }

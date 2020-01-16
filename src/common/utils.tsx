@@ -2,6 +2,7 @@ import {message, Modal} from 'antd'
 import history from './history'
 import React, {Component} from 'react'
 import moment from 'moment'
+import conf from '../../config/conf.json';
 
 // 和`webpack chunk`配合使用的异步加载模块
 export function asyncComponent(importComponent: any) {
@@ -9,7 +10,7 @@ export function asyncComponent(importComponent: any) {
     constructor(props: any) {
       super(props)
       this.state = {
-        component: null,
+        component: {},
       }
     }
 
@@ -32,12 +33,11 @@ export function asyncComponent(importComponent: any) {
 
 // ajax 请求的统一封装
 export async function request(option: any = {}) {
-  console.log(option)
   option = Object.assign(
     {
       url: '',
       method: 'GET',
-      showError: true,
+      showError: false,
       action: (data: any) => {
         if (data.success === false && data.code === 'ERROR_NEED_LOGIN') {
           // TODO 这里可能统一跳转到 也可以是弹窗点击跳转
@@ -105,16 +105,15 @@ export async function request(option: any = {}) {
   if (option.action) {
     option.action(retData)
   }
-  console.log('fetch return', retData)
   return retData
 }
 
 // 统一成功提示
-export function successTip(content) {
+export function successTip(content: string) {
   message.success(content)
 }
 // 统一失败提示
-export function errorTip(title, content) {
+export function errorTip(title: string, content: string) {
   const l = arguments.length
   if (l === 0) {
     title = '系统异常'
@@ -128,58 +127,25 @@ export function errorTip(title, content) {
   })
 }
 // 统一信息提示
-export function infoTip(content) {
+export function infoTip(content: any) {
   message.info(content)
 }
+
 // 统一警告提示
-export function warningTip(content) {
+export function warningTip(content: any) {
   message.warning(content)
 }
-
-
-
-// 计算文件大小
-export function calcSize(size = 0, defaultUnit = 'B', isToFixed = true) {
-  if (size === '') {
-    return ''
-  }
-
-  const map = {
-    b: 1,
-    kb: 2 ** 10,
-    mb: 2 ** 20,
-    gb: 2 ** 30,
-    tb: 2 ** 40,
-  }
-
-  // 后端给的是单位是B
-  size = parseInt(size, 10)
-
-  // 添加正负数判断
-  // let isNegative = false
-  if (size < 0) {
-    // isNegative = true
-    size = Math.abs(size)
-  }
-
-  if (size === 0) {
-    return '0 B'
-  } else if (size < map.mb && size >= map.kb) {
-    defaultUnit = 'KB'
-  } else if (size < map.gb && size >= map.mb) {
-    defaultUnit = 'MB'
-  } else if (size < map.tb && size >= map.gb) {
-    defaultUnit = 'GB'
-  } else if (size >= map.tb) {
-    defaultUnit = 'TB'
-  }
-
-  size = myToFixed(size, map[defaultUnit.toLowerCase()], isToFixed)
-  return `${size} ${defaultUnit}`
-}
-
 
 // 时间戳转化时间显示
 export function getFormatTime(time: string, format = 'YYYY-MM-DD') {
   return time ? moment(time).format(format) : ''
+}
+
+export let config = Object.assign(conf, window.conf);
+
+// 获取日志配置
+export function log(...arg) {
+  if (config.debug) {
+    console.log(...arg);
+  }
 }

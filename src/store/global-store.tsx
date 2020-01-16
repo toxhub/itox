@@ -1,60 +1,31 @@
 import { observable, action, computed, runInAction} from 'mobx';
-import io from '../io';
-import history from '../common/history'
+import io from '../io/index';
+import history from '../common/history';
+import {config, errorTip, successTip, log} from "../common/utils";
+import md5 from 'md5';
 
 export class GlobalStore {
-
   @observable userInfo: any = null;
-  @observable sideList = [{
-    url: '/',
-    code: 'document',
-    name: '文档中心',
-    children: [
-      {name: '文档类型管理', url: '/doc/manage', code: 'doc_manage', authCode: 'search_doc', authValue: 1},
-      {name: '我的文档库', url: '/doc/my', code: 'doc_my', authCode: 'check_record', authValue: 1},
-    ],
-  }, {
-    url: '/app',
-    code: 'service_center',
-    name: '我的应用',
-    children: [
-      {name: '文档搜索', url: '/app/search', code: 'app_search', authCode: 'search_doc', authValue: 1},
-    ],
-  }, {
-    url: '/organization',
-    code: 'organize',
-    name: '用户管理',
-    children: [
-      // {name: '部门管理', url: '/organization/department', code: 'department'},
-      {name: '账户管理', url: '/organization/member', code: 'member', authCode: 'accounts', authValue: 1},
-      {name: '角色管理', url: '/organization/role', code: 'role', authCode: 'role_manage', authValue: 1},
-      {name: '项目组管理', url: '/organization/group', code: 'group', authCode: 'group_manage', authValue: 1},
-    ],
-  }]
-  @observable system = ''
-  @observable frameInfo = {}
-  // 面包屑
-  @observable navList = []
-  // 右边菜单栏是否关闭
-  @observable collapsed = window.localStorage.collapsed !== 'false'
+  @observable appConfigList = [];
+  @observable filterWord = '';
+  @observable about = '';
+  @observable plugin = '';
 
-  @observable subMenuObj: any = {}
-  @action
-  async login (account:string, password:string)  {
-    const {success, content} = await io.auth.login({
-      body: {
-        account,
-        password
-      },
-    })
-    if (success) {
-      runInAction(() => {
-        this.userInfo = content
+  @computed
+  get configList (){
+    if (this.filterWord) {
+      return this.appConfigList.filter(item => {
+        return JSON.stringify(item).indexOf(this.filterWord) >= 0;
       })
     }
-    return success;
+    return this.appConfigList
   }
   @action
+  setFilterWord(filterWord: string) {
+    this.filterWord = filterWord;
+  }
+  // 获取当前的登录信息
+  @action.bound
   async loginInfo() {
     if (this.userInfo) return;
     const {success, content} = await io.auth.loginInfo({showError: false})
@@ -63,61 +34,92 @@ export class GlobalStore {
         this.userInfo = content
       })
     } else {
-      history.push('/login')
+      history.push(`${config.pathPrefix}/login`)
     }
   }
-  @action
+  // 登录操作
+  @action.bound
+  async login(account: string, password: string) {
+    const {success, content} = await io.auth.login({
+      body: {
+        name: account,
+        password: md5(password)
+      },
+    })
+    if (success) {
+      runInAction(() => {
+        this.userInfo = content;
+        history.push(`${config.pathPrefix}/home`)
+      })
+    }
+  }
+  // 登出操作
+  @action.bound
   async logout() {
-    history.push('/login')
+    await io.auth.logout()
+    history.push(`${config.pathPrefix}/login`)
     runInAction(() => {
       this.userInfo = null
     })
   }
-  // 外部调用的方法，可更新产品列表或者导航面包屑 和当前的system
-  @action.bound frameChange(list: any, system = '') {
-    this.navList = list || []
-    if (system) {
-      this.system = system;
-    }
+  // 获取配置列表
+  @action.bound
+  async getList(refresh = false) {
+    if (this.appConfigList.length > 0 && !refresh ) return;
+    const {success, content} = await io.render.list()
+    if (!success) return
+    runInAction(() => {
+      this.appConfigList = content
+    })
   }
-    // 收起展开操作
-  @action changeCollapsed = () => {
-    const newCollapsed = !this.collapsed
-    window.localStorage.collapsed = `${newCollapsed}`
-    this.collapsed = newCollapsed
-  }
-  @action mouseEnterParent(e: any, parent:any, index: number) {
-    const target = e.currentTarget
-    const subMenuObj: any = {
-      parent,
-      mouse: '',
-      code: parent.code,
-      index,
-      style: {
-        left: target.offsetWidth,
-        top: target.offsetTop - target.parentElement.scrollTop,
-      },
-    }
-    if (e.clientY > (document.body.clientHeight / 2)) {
-      subMenuObj.style.top = 'auto'
-      subMenuObj.style.bottom = target.parentElement.parentElement.clientHeight - target.offsetTop - target.clientHeight + target.parentElement.scrollTop
-    }
-    this.subMenuObj = subMenuObj
-  }
-    // 鼠标移开产品列表
-  @action mouseLeaveProduct() {
-    this.subMenuObj.mouse = 'leave'
-    setTimeout(action(() => {
-      if (this.subMenuObj.mouse === 'leave') {
-        this.subMenuObj = {}
+  // 获取配置列表
+  @action.bound
+  async markdown(type = 'about') {
+    if ((type === 'about' && this.about) || (type=== 'plugin' && this.plugin)) return;
+    const {success, content, message} = await io.render.markdown({query: {type}})
+    if (!success) return
+    runInAction(() => {
+      if (type === 'about') {
+        this.about = content
+      } else {
+        this.plugin = content
       }
-    }), 200)
+    })
   }
-    // 鼠标指向二级菜单
-  @action mouseEnterProductItems() {
-    if (this.subMenuObj.mouse === 'leave') {
-      this.subMenuObj.mouse = ''
+  // 编辑配置
+  @action.bound
+  async edit(key: string, config: any) {
+    log('edit key', key);
+    const {success, message} = await io.render.edit({body: {key, config}});
+    if (success){
+      successTip('编辑成功');
+    } else {
+      errorTip('编辑失败', message);
     }
+    setTimeout(() =>this.getList(true), 500)
   }
+  // 添加配置
+  @action.bound
+  async add(config: any) {
+    const {success, message} = await io.render.add({body: config})
+    if (success){
+      successTip('新建成功');
+    } else {
+      errorTip('新建失败', message);
+    }
+    setTimeout(() =>this.getList(true), 500)
+  }
+  @action.bound
+  async delete(key: string) {
+    log('delete key', key);
+    const {success, message} = await io.render.delete({body: {key}})
+    if (success){
+      successTip('删除成功');
+    } else {
+      errorTip('删除', message);
+    }
+    setTimeout(() =>this.getList(true), 500)
+  }
+
 }
 export default new GlobalStore();

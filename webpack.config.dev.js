@@ -3,8 +3,8 @@ const path = require('path')
 const fs = require('fs')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const config = require('./config')
-
+const config = require('./config');
+fs.writeFileSync(path.join(__dirname, './config/conf.json'), JSON.stringify(config.conf.dev, null, '\t'))
 const entry = {}
 // 获取src 目录下的js文件作为入口文件
 const files = fs.readdirSync(path.join(__dirname, './src'))
