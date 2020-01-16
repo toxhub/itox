@@ -1,96 +1,92 @@
 import React, {Component} from 'react'
-import {Divider, Layout, Menu, Spin, Dropdown, Icon, Avatar} from 'antd';
-
+import {Layout, Menu, Spin, Dropdown, Icon} from 'antd';
 import {observer, inject} from 'mobx-react'
-import {observable, action, toJS} from 'mobx'
-import {withRouter} from 'react-router-dom'
+import {withRouter, Link} from 'react-router-dom'
+import {config, log} from "../common/utils";
 
-import Nav from './nav'
-import Side from './side'
+const { Header, Sider, Content, Footer } = Layout
 
 import logo from '../assets/svg/logo.svg'
 import '../icon'
-
-const {Sider, Content} = Layout
 
 @inject("globalStore")
 @observer
 class Frame extends Component<any, any> {
   constructor(props: any) {
     super(props)
-    console.log('props', props)
+    this.state = {
+      collapsed: false,
+      selectedKeys: ['home']
+    }
   }
 
-  handleClickLogout = () =>{
+  UNSAFE_componentWillMount() {
+    log('Frame componentWillMount');
+    this.props.globalStore.loginInfo();
+    log('Frame props', this.props);
+    const {location} = this.props;
+    const nameArray = location.pathname.split("/")
+    this.setState({
+      selectedKeys: [nameArray[nameArray.length -1]],
+    })
+  }
+  logout = () => {
     this.props.globalStore.logout();
   }
-  UNSAFE_componentWillMount() {
-    console.log('componentWillMount');
-    this.props.globalStore.loginInfo();
+  toggle = () => {
+    this.setState({
+      collapsed: !this.state.collapsed,
+    })
   }
   render() {
-    const menu = (
-      <Menu>
-        <Menu.Item key="0">
-          <span onClick={this.props.globalStore.logout}>
-            <Icon type="logout" theme="outlined" style={{marginRight: 10}} />
-            退出登录
-          </span>
-        </Menu.Item>
-      </Menu>
-    )
+    const {userInfo} = this.props.globalStore
     const {children} = this.props
-    if(this.props.globalStore.userInfo) {
+    if(userInfo) {
       return (
-        <div className="frame FBV">
-          <div className="frame-header">
-            <div className="header-container FBH FBAC">
-              <div className="header-front FBH FBAC">
-                <img src={logo} className="logo ml10" alt="logo"/>
-                <Divider type="vertical" style={{height: 24, margin: '0 6px 0 2px'}} />
-                <span className="mr16" style={{color: '#000', fontWeight: 400}}>文档智能管理平台</span>
-              </div>
-              <Nav
-                {...this.props}
-                navList={toJS(this.props.globalStore.navList)}
-                frameInfo={toJS(this.props.globalStore.frameInfo)}
-              />
+        <Layout className="frame">
+          <Header className="FBH FBAC" style={{ background: '#fff', padding: 0 }}>
+            <div className="frame-logo p10">
+              <img src={logo} className="w100 h100" />
+            </div>
 
-              <div className="header-behind mla FBH FBAC FBJC pr20">
-                <span className="avatar mr12">
-                  {this.props.globalStore.userInfo.nickname.charAt(0)}
-                </span>
-                <Dropdown overlay={menu} className="mr12">
-                  <span >
-                    {this.props.globalStore.userInfo.nickname}
-                    <Icon className="ml4" type="down" />
-                  </span>
-                  
-                </Dropdown>
-                {
-                  this.props.globalStore.userInfo.avatar ? (<img
-                    src={this.props.globalStore.userInfo.avatar}
-                    className="avatar"
-                  />) : <Avatar
-                    style={{verticalAlign: 'middle'}}
-                    icon='user'
-                  />
-                }
+            <div className="FB1 FBH FBAC FBJB">
+              <div className="fs26 fw500">
+                前端渲染服务管理
               </div>
+              <Menu
+                mode="horizontal"
+                defaultSelectedKeys={this.state.selectedKeys}
+                style={{ lineHeight: '64px' }}
+                className="FB1 ml10"
+              >
+                <Menu.Item key="home"><Link to={`${config.pathPrefix}/home`}>首页</Link></Menu.Item>
+                <Menu.Item key="about"><Link to={`${config.pathPrefix}/about`}>说明</Link></Menu.Item>
+                <Menu.Item key="plugin"><Link to={`${config.pathPrefix}/plugin`}>插件</Link></Menu.Item>
+              </Menu>
             </div>
-          </div>
-          <div className="frame-main FBH">
-            <Side 
-             sideList = {this.props.globalStore.sideList}
-             system={this.props.globalStore.system}
-             {...this.props}
-             store={this.props.globalStore}
-            />
-            <div className="frame-container p10" >
-                {this.props.children}
+            <div>
+              <Dropdown
+                overlay={
+                  <Menu>
+                    <Menu.Item className="mt0 mb0 pt4 pb4" onClick={this.logout}>退出登录</Menu.Item>
+                  </Menu>
+                }
+                trigger={['click']}
+              >
+                <div className="FBH FBAC FBJE pr20 hand">
+                  <div className="ml8">{userInfo.nickname} <Icon type="down" /></div>
+                </div>
+              </Dropdown>
             </div>
-          </div>
-        </div>
+          </Header>
+          <Content className="p10">
+            {children}
+          </Content>
+          <Footer style={{ textAlign: 'center' }}>
+            <div>Copyright 2016-2020 Trends Online CO,LTD. All Rights Reserved.</div>
+            <div>杭州数澜科技有限公司</div>
+          </Footer>
+        </Layout>
       )
     }
     return (<div style={{textAlign: 'center'}}> <Spin /></div>);
