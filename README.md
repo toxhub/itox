@@ -47,7 +47,6 @@ Tox Gateway Site
 ```sh
 $ make install
 ```
-
 - 本地开发
 
 ```sh
