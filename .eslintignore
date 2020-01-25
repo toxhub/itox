@@ -1,0 +1,8 @@
+out/*
+logs/*
+coverage/*
+node_modules/*
+dist
+src/assets
+test.js
+bin
